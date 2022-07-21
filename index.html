@@ -12,6 +12,7 @@
     <header>
       <img src="./assets/turdle-turtle.png" alt="turtle">
       <h1>turdle</h1>
+      <!-- space aftter the word turdle -->
       <div class="space-holder"></div>
     </header>
     <main>
@@ -64,6 +65,8 @@
       <section id="game-section">
         <table>
           <tr id="row-1">
+            <!-- max input of 1, return a value between a-z.  -->
+            <!-- tr means row, th means horizontal -->
             <th><input maxlength="1" onkeypress="return /[a-z]/i.test(event.key)" type="text" name="" value="" id="cell-1-0"></th>
             <th><input maxlength="1" onkeypress="return /[a-z]/i.test(event.key)" type="text" name="" value="" id="cell-1-1"></th>
             <th><input maxlength="1" onkeypress="return /[a-z]/i.test(event.key)" type="text" name="" value="" id="cell-1-2"></th>
@@ -108,6 +111,7 @@
         </table>
         <div class="inline">
           <button type="button" name="guess" id="guess-button">guess!</button>
+          <!-- error message hidden propbably in javascript-->
           <p id="error-message"></p>
         </div>
       </section>
@@ -164,7 +168,7 @@
         <button type="button" name="rules" class="nav-button" id="stats-button">stats</button>
       </nav>
     </main>
-    <script src="words.js"></script>
+    <!-- <script src="words.js"></script> -->
     <script src="index.js"></script>
   </body>
 </html>

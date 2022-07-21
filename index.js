@@ -3,6 +3,7 @@ var winningWord = '';
 var currentRow = 1;
 var guess = '';
 var gamesPlayed = [];
+var words;
 
 // Query Selectors
 var inputs = document.querySelectorAll('input');
@@ -21,13 +22,17 @@ var gameOverGuessCount = document.querySelector('#game-over-guesses-count');
 var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
 
 // Event Listeners
-window.addEventListener('load', setGame);
-
+window.addEventListener('load', function(event) {
+  fetchWords()
+});
+//inputs are all the boxes
 for (var i = 0; i < inputs.length; i++) {
   inputs[i].addEventListener('keyup', function() { moveToNextInput(event) });
 }
 
 for (var i = 0; i < keyLetters.length; i++) {
+  //key letters is attached to span tag that are 
+  //in the rules section of html and key-section
   keyLetters[i].addEventListener('click', function() { clickLetter(event) });
 }
 
@@ -46,12 +51,28 @@ function setGame() {
   updateInputPermissions();
 }
 
+function fetchWords() {
+  fetch('http://localhost:3001/api/v1/words')
+    .then(response => response.json())
+    .then(data => {
+      words = data
+      console.log('words', words)
+      setGame()
+})
+}
+
 function getRandomWord() {
+  //generate random number between 0 and 2500
+  //return the word at that index from the array of words
   var randomIndex = Math.floor(Math.random() * 2500);
+  console.log('index', randomIndex)
+  console.log('indexword', words[randomIndex])
   return words[randomIndex];
 }
 
 function updateInputPermissions() {
+  //if the input id does not include the current row
+  //diable the button, else un-disable it
   for(var i = 0; i < inputs.length; i++) {
     if(!inputs[i].id.includes(`-${currentRow}-`)) {
       inputs[i].disabled = true;
@@ -64,10 +85,23 @@ function updateInputPermissions() {
 }
 
 function moveToNextInput(e) {
+  //.keyCode not recommended as browserss
+  //may stop supporting it soon mdn recommends KeyboardEvent.code
+  //e.keyCode, identifies the unmodified value of the pressed key (89 for y)
+  //e.charCode returns an integer between 0 and 65535 representing the UTF-16 code unit at the given index.
+  //ex) const sentence = 'The quick brown fox jumps over the lazy dog.';
+  //const index = 4;
+  //console.log(`The character code ${sentence.charCodeAt(index)} is equal to ${sentence.charAt(index)}`);
+  //expected output: "The character code 113 is equal to q"
   var key = e.keyCode || e.charCode;
-
+  console.log('keycode', e.keyCode)
+  console.log('charcode', e.charCode)
+  //key at 8 is the backspace key
+  //ket at 46 is the DEL key
   if( key !== 8 && key !== 46 ) {
     var indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
+    //indexOfNext is the index of the boxes horizontally from 1-5
+    console.log('indexofNext', indexOfNext)
     inputs[indexOfNext].focus();
   }
 }
